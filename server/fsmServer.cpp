@@ -17,13 +17,14 @@ void fsmServer::sendAck(void)
     cout << "enviando ACK" << endl;
     p.getPacketData(packet,dataString);
     cout << "esta es la data que llego" << dataString << endl;
-    //if(dataString.length()<512)cell.nextState=IDLE;
+    
     
     
     file.increaseChunkNum();
     file.chunkToFile(dataString);//GUARDO LA INFO EN EL ARCHIVO
     p.createPacket(packet,ack,file.getChunkNum());
     s.sendInfo(packet); //VOLVER APON ER
+    if(dataString.length()<512)cicleFsm(last_send);
    
 }
 
@@ -79,7 +80,7 @@ void fsmServer::sendData(void)
 	string dataString=file.getChunk();
         if(file.End())
         {
-            cell=fsm_matrix[cell.nextState][last_data];
+            cell=fsm_matrix[cell.nextState][last_send];
         }
         else
         {

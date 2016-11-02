@@ -7,7 +7,7 @@
 
 
 typedef enum {IDLE,WRITE,READ,LAST_READ,FINISH} typeState;
-typedef enum {wrq,rrq,timebreak,ack,quit,last_data,data,error,no_event}	typeEvent;
+typedef enum {wrq,rrq,timebreak,ack,quit,last_send,data,error,no_event}	typeEvent;
 
 
 
