@@ -202,6 +202,7 @@ void server::sendInfo(string& str)
 {
    	len = str.length();	 
 	rv = apr_socket_send(ns, str.c_str(), &len); 
+        if(rv==APR_SUCCESS) cout << "todo piola" << endl;
         
 }
 

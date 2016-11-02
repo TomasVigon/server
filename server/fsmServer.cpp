@@ -16,8 +16,9 @@ void fsmServer::sendAck(void)
     string dataString;
     cout << "enviando ACK" << endl;
     p.getPacketData(packet,dataString);
-    file.chunkToFile(dataString);//GUARDO LA INFO EN EL ARCHIVO
+    cout << "esta es la data que llego" << dataString << endl;
     file.increaseChunkNum();
+    file.chunkToFile(dataString);//GUARDO LA INFO EN EL ARCHIVO
     p.createPacket(packet,ack,file.getChunkNum());
     s.sendInfo(packet); //VOLVER APON ER
    
@@ -33,6 +34,7 @@ void fsmServer::acceptWRQ(void)
     //file.chunkToFile(dataString);//GUARDO LA INFO EN EL ARCHIVO
     //file.increaseChunkNum();
     p.createPacket(packet,ack,file.getChunkNum());
+    cout << "paquete a enviar" << packet << endl;
     s.sendInfo(packet); //VOLVER APON ER
 }
 

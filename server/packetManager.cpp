@@ -73,7 +73,7 @@ unsigned int packetManager::getPacketBLock(string& packet)
 
 void packetManager::getPacketData(string& packet, string& dataString)
 {
-	dataString=packet.substr(4);
+	dataString=packet.substr(3);
 }
 void packetManager::getPacketFileName(string& packet, string& dataString)
 {
