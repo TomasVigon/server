@@ -21,12 +21,13 @@ public:
     string getChunk(); //Setear chunkSize = 512 para TFTP
     void increaseChunkNum();
     void decreaseChunKNum();
-    bool notEnd();
+    bool End();
     bool openrFile(string str);
     void openwFile(string str);
     void closeFile();
     void chunkToFile(string str);
     unsigned int getChunkNum();
+    bool getCheckFile();
     
     //aguante boca y github
 private:

@@ -13,9 +13,41 @@ fsmServer::~fsmServer() {
 
 void fsmServer::sendAck(void)
 {
-    //GUARDO LA INFO EN EL ARCHIVO
+    string dataString;
+    p.getPacketData(packet,dataString);
+    file.chunkToFile(dataString);//GUARDO LA INFO EN EL ARCHIVO
+    file.increaseChunkNum();
     p.createPacket(packet,ack,file.getChunkNum());
-    s.sendInfo(packet); 
+    s.sendInfo(packet); //VOLVER APON ER
+   
+}
+
+void fsmServer::acceptWRQ(void)
+{
+    p.getPacketFileName(packet,filename);
+    file.openwFile(filename);
+    string dataString;
+    p.getPacketData(packet,dataString);
+    file.chunkToFile(dataString);//GUARDO LA INFO EN EL ARCHIVO
+    file.increaseChunkNum();
+    p.createPacket(packet,ack,file.getChunkNum());
+    s.sendInfo(packet); //VOLVER APON ER
+}
+
+void fsmServer::acceptRRQ(void)
+{
+    p.getPacketFileName(packet,filename);
+    file.openrFile(filename);
+    if(file.getCheckFile()==true)
+    {
+        //SI NUMERO ACK CORRESPONDE A NUMERO DATA
+        file.increaseChunkNum();
+	string dataString=file.getChunk();
+	p.createPacket(packet,data,dataString,file.getChunkNum());
+	s.sendInfo(packet);
+    }
+    else
+        cout << "no pude abrir el archivo";
 }
 
 void fsmServer::errorEvent(void)
@@ -37,8 +69,15 @@ void fsmServer::sendData(void)
         //SI NUMERO ACK CORRESPONDE A NUMERO DATA
         file.increaseChunkNum();
 	string dataString=file.getChunk();
+        if(file.End())
+        {
+            cell=fsm_matrix[cell.nextState][last_data];
+        }
+        else
+        {
 	p.createPacket(packet,data,dataString,file.getChunkNum());
-	s.sendInfo(packet); 
+	s.sendInfo(packet); // VOLVER A PONER
+        }
 }
 
 bool fsmServer::isEvent()

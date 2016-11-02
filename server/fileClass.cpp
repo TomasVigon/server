@@ -68,10 +68,10 @@ void fileClass::chunkToFile(string str)
     
 }
 
-
-
-
-
+bool fileClass::getCheckFile()
+{
+    return checkFile;
+}
 
 
 void fileClass::increaseChunkNum()
@@ -85,16 +85,9 @@ void fileClass::decreaseChunKNum()
 }
 
 
-bool fileClass::notEnd()
+bool fileClass::End()
 {
-    bool rv = false;
-    
-    if(readFile.eof())
-        rv = false;
-    else
-        rv = true;
-    
-    return rv;
+    return readFile.eof();
 }
 
 unsigned int fileClass::getChunkNum()
