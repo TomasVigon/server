@@ -45,6 +45,7 @@ public:
     void receiveInfo(string &str);
     void sendInfo(string &str);
     apr_status_t getRV();
+    bool isEvent(string& packet);
 private:
     apr_status_t rv;   //esta variable la usamos para leer los errores y verificar cuando las cosas andan o no.
     apr_pool_t *mp;   //esta variable la conocemos del tp anterior.
@@ -61,6 +62,7 @@ private:
     // identifica el puerto a escuchar (s en nuestro caso) y uno o mas que identifican las conexiones realiadas (ns en nuestro caso).
     apr_socket_t *ns;
     apr_status_t doListen();
+    apr_size_t len;
 
 };
 

@@ -227,3 +227,19 @@ void server::sendInfo(string& str)
 	rv = apr_socket_send(ns, str.c_str(), &len); 
         
 }
+
+bool server::isEvent(string& packet)
+{
+    bool isev=false;
+    //Inicializo el primer byte del buffer en 0 para detectar si no recibo nada.
+    char buf[BUFSIZE];	
+    len = BUFSIZE-1;
+    apr_socket_recv(s,buf,&len);
+    buf[len] = '\0'; 
+    packet=string(buf);
+    if(APR_STATUS_IS_EOF(rv) || len==0)
+        isev= false;
+    else
+        isev= true;
+    return isev;
+}
