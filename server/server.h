@@ -46,6 +46,7 @@ public:
     void sendInfo(string &str);
     apr_status_t getRV();
     bool isEvent(string& packet);
+    bool isConnected();
 private:
     apr_status_t rv;   //esta variable la usamos para leer los errores y verificar cuando las cosas andan o no.
     apr_pool_t *mp;   //esta variable la conocemos del tp anterior.

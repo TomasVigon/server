@@ -11,7 +11,7 @@
 #include "EventAndState.h"
 #include "fileClass.h"
 
-#define STATE_COUNT 4
+#define STATE_COUNT 5
 #define EVENT_COUNT 8 
 #define NOEVENT -1
 
@@ -31,7 +31,8 @@ public:
     typeState getCellState(void);
     bool isEvent();
     typeEvent getEvent();
-    void setFilename(string& name);	
+    void setFilename(string& name);
+    bool connectServer();
 	
 private:
         string packet;
@@ -48,8 +49,8 @@ private:
 	{{ READ, &fsmServer::nothing },             { READ, &fsmServer::nothing },		{ READ, &fsmServer::sendData },			{ READ, &fsmServer::sendData },		{ FINISH, &fsmServer::end },		{ LAST_READ, &fsmServer::nothing },		{ READ, &fsmServer::nothing },			{ IDLE, &fsmServer::errorEvent } },		//READ              
 	{{ LAST_READ, &fsmServer::nothing },        { LAST_READ, &fsmServer::nothing },		{ LAST_READ, &fsmServer::sendData },            { IDLE, &fsmServer::nothing },		{ FINISH, &fsmServer::end },		{ LAST_READ, &fsmServer::nothing },		{ LAST_READ, &fsmServer::nothing },		{ IDLE, &fsmServer::errorEvent } },		//LAST_READ         
         {{ FINISH, &fsmServer::nothing },           { FINISH, &fsmServer::nothing },            { FINISH, &fsmServer::nothing },                { FINISH, &fsmServer::nothing },        { FINISH, &fsmServer::nothing },        { FINISH, &fsmServer::nothing },                { FINISH, &fsmServer::nothing },                { FINISH, &fsmServer::nothing }  },             //FINISH          
-        
-        
+                
+
         };
 
 	//void sendWrq(void);

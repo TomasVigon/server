@@ -72,3 +72,9 @@ void fsmServer::end()
     //Y HACES OTRAS COSAS
 }
 
+bool fsmServer::connectServer()
+{
+    s.doServerConnect();
+    return s.isConnected();    
+}
+

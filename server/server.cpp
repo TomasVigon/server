@@ -15,9 +15,11 @@ server::server(const server& orig) {
 
 server::~server() {
     if(ns != NULL )
+    {
         // Cuando terminamos de recibir lo que teníamos que reicibir cerramos el puerto.
         apr_socket_shutdown(ns, APR_SHUTDOWN_READWRITE);
         apr_socket_close(ns);
+    }
     //Finalmente cerramos los dos sockets. devolviendo la memoria allocada.
     apr_socket_close(s);
     apr_pool_destroy(mp);
@@ -242,4 +244,9 @@ bool server::isEvent(string& packet)
     else
         isev= true;
     return isev;
+}
+
+bool server::isConnected()
+{
+    return (rv==APR_SUCCESS);
 }
