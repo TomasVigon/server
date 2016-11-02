@@ -17,6 +17,9 @@ void fsmServer::sendAck(void)
     cout << "enviando ACK" << endl;
     p.getPacketData(packet,dataString);
     cout << "esta es la data que llego" << dataString << endl;
+    //if(dataString.length()<512)cell.nextState=IDLE;
+    
+    
     file.increaseChunkNum();
     file.chunkToFile(dataString);//GUARDO LA INFO EN EL ARCHIVO
     p.createPacket(packet,ack,file.getChunkNum());
@@ -112,8 +115,7 @@ typeEvent fsmServer::getEvent()
 
 void fsmServer::end()
 {
-    //CIERRA EL ARCHIVO
-    //Y HACES OTRAS COSAS
+    cout << "fin transmision" << endl;
 }
 
 bool fsmServer::connectServer()
