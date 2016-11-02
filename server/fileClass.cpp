@@ -3,7 +3,7 @@
 
 fileClass::fileClass() {
     dwld="Downloads/";
-    checkFile=0;
+    checkFile=false;
     chunkNum=0;
 }
 

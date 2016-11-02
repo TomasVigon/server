@@ -28,10 +28,10 @@ void fsmServer::acceptWRQ(void)
     p.getPacketFileName(packet,filename);
     cout << "recibiendo archivo: " << filename << endl;
     file.openwFile(filename);
-    string dataString;
-    p.getPacketData(packet,dataString);
-    file.chunkToFile(dataString);//GUARDO LA INFO EN EL ARCHIVO
-    file.increaseChunkNum();
+    //string dataString;
+    //p.getPacketData(packet,dataString);
+    //file.chunkToFile(dataString);//GUARDO LA INFO EN EL ARCHIVO
+    //file.increaseChunkNum();
     p.createPacket(packet,ack,file.getChunkNum());
     s.sendInfo(packet); //VOLVER APON ER
 }
@@ -39,8 +39,9 @@ void fsmServer::acceptWRQ(void)
 void fsmServer::acceptRRQ(void)
 {
     p.getPacketFileName(packet,filename);
-    file.openrFile(filename);
-    if(file.getCheckFile()==true)
+    cout << "Enviando archivo:" << filename << endl;
+    //file.openrFile(filename);
+    if(file.openrFile(filename))
     {
         //SI NUMERO ACK CORRESPONDE A NUMERO DATA
         file.increaseChunkNum();
@@ -49,7 +50,7 @@ void fsmServer::acceptRRQ(void)
 	s.sendInfo(packet);
     }
     else
-        cout << "no pude abrir el archivo";
+        cout << "no pude abrir el archivo" << endl;
 }
 
 void fsmServer::errorEvent(void)
