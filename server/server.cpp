@@ -33,7 +33,7 @@ void server::doServerConnect()
     //LLamamos a la función doListen para que inicialice el puerto para escucha. El socket s va a tener la info del puerto que se está escuchando.
     if(doListen() == APR_SUCCESS)
     {
-	printf("\nnow listening ! turn on the client!");
+	cout << "now listening ! turn on the client!" << endl;
 	
 	// Se toma el tiempo actual para loopear por SECONDS_TO_WAIT segundos esperando 
 	// que se conecte un client. Si en ese tiempo no se conecta nadie escribimos que no encontramos cliente y chau.
@@ -51,7 +51,7 @@ void server::doServerConnect()
             // Sin embargo la conexión con el cliente sigue viva ya que el socket ns no fue cerrado.
             apr_socket_shutdown(s, APR_SHUTDOWN_READWRITE);
 	
-            printf("\nCONNECTION ACCEPTED");
+           cout << "CONNECTION ACCEPTED" << endl;
 			
             //Una vez que nos conectamos mantenemos el Network Socket en no bloqueante 
             //Y lo pasamos a 0 segundos para cumplir con nuestra hipótesis de Event Driven Programming.
@@ -167,46 +167,28 @@ void server::receiveInfo(string &str)
 	char buf[BUFSIZE];					//Un buffer para levantar el buffer de la red.
 	apr_size_t len;						
 		
-	printf("\nSTARTING RECEPTION LOOP");
+	cout << "STARTING RECEPTION LOOP"<< endl;
 	
-	//La función simplemente recibe un chunk de información de la red.
-	//Está diseñada para ilustrar el funcionamiento de la función apr_socket_recv() que se utiliza para recibir información de la conexión que se haya establecido.	
+	
 	do
-	{
-		
-		//Inicializo el primer byte del buffer en 0 para detectar si no recibo nada.
+	{		
 		buf[0] = 0;											
 		
-		//Inicializamos len en cada ciclo ya que apr_socket_recv() la modifica. Tomamos len como BUFSIZE-1 para poner en buf[BUFSIZE-1] el '\0'. 
-		//Ya que no podemos asumir que nos están mandando un NULL terminated string.
+		
 		len = BUFSIZE- 1;
 																
-		//La función apr_socket_recv() recibe la info del sock (Network Socket inicializado) y la pone en el buffer.
-		//Recibe hasta len bytes (por eso le mandamos BUFSIZE-1, para poner en el último caracter de buf el terminador).
-		//A su vez, devuelve en len la cantidad de bytes recibidos.
-		//Cuidado con lo comentado arriba que es importante. len es un argumento tanto de "entrada" como de "salida", ya que al llamar la función se lo toma para
-		//conocer el tamaño de buf (hasta cuantos bytes puedo poner en buf) y cuando la función vuelve sirve para saber cuantos bytes de buf son realmente válidos.
-		//El len como parámetro de entrada sirve para que apr_socket_recv() no genere un buffer over run. len como parámetro de salida sirve para que nosotros
-		//sepamos exáctamente cuantos datos del buffer de salida son válidos.
-		//En su nombre devuelve si hubo un error o no con códigos APR. No conviene comparar su return value contra APR_SUCCESS como en
-		//otras funciones ya que cuando usamos esta función en el modo NONBLOCK con timeout 0, si la llamamos muy seguido nos manda un código distinto de APR_SUCCESS
-		//que significa que está PENDING (que no recibió nada porque el controlador todavía no está listo para recibir). Este código no tiene un define detrás.
-		//Para filtrar este tipo de códigos, la macro APR_STATUS_IS_EOF nos asegura que si devuelve FALSE no hay ningún problema con la comunicación. A su vez, para 
-		//saber si recibimos algo o no utilizamos el valor de len.
-		//Con estas dos variables podemos por lo tanto controlar que no haya problemas de red (APR_STATUS_IS_EOF() == false) 
-		//y si recibimos algo o no (len > 0 recibimos, len == 0 no recibimos nada)
+		
 		rv = apr_socket_recv(ns, buf, &len);	
 		
-		buf[len] = '\0'; //Ponemos un terminador en buf[len] (len tiene la cantidad de bytes recibidos). como len <=BUFSIZE-1 no hay posibilidad de buffer overrun.
+		buf[len] = '\0'; 
 		
-		//Por último se recibimos algo lo imprimimos. Sino le explicamos al usuario que no hay nada más que recibir.
+		
 		if(len>0)
 			str = string(buf);
 		else
 			printf("\nNOTHING FURTHER TO RECEIVE");
 	}
-		//Asume que del otro lado nos van a mandar un chunk de información continua, y por lo tanto, cuando no haya más información a recibir (len == 0) 
-		//o cuando detecte algún error de red (APR_STATUS_IS_EOF(rv) == true) termina la comunicacion (quit = true);
+		
 		while ( !(APR_STATUS_IS_EOF(rv) || (len == 0)));
 
 }
@@ -218,14 +200,7 @@ apr_status_t server::getRV()
 
 void server::sendInfo(string& str)
 {
-   	apr_size_t len = str.length();
-	//La funcion apr_socket_send manda len bytes (3er parámetro) 
-	//del buffer (req_hdr en este caso) que recibe en su segundo parámetro 
-	//al socket de su primer parámetro (sock en este caso).
-	//Nótese que al definir len como strlen(req_hdr) no se manda el terminador '\0' ya que se mandan del 0 al len-1 bytes (en total len bytes) y no len+1 bytes.
-	//En este caso mandamos un string en ASCII, pero se ve claramente que se puede mandar cualquier chunk de bytes.
-	//la función nos devuelve cuantos bytes logró enviar en len. En rigo deberíamos verificar len para asegurarnos de que se mandó todo el chunk que deseamos mandar.
-	//Como se trata de un chunk extremadamente pequeño (28 bytes) en este programa de prueba se ignora el len. Correctamente se debería verificar que se haya enviado todo.
+   	len = str.length();	 
 	rv = apr_socket_send(ns, str.c_str(), &len); 
         
 }
@@ -233,12 +208,18 @@ void server::sendInfo(string& str)
 bool server::isEvent(string& packet)
 {
     bool isev=false;
-    //Inicializo el primer byte del buffer en 0 para detectar si no recibo nada.
+    
     char buf[BUFSIZE];	
     len = BUFSIZE-1;
-    apr_socket_recv(s,buf,&len);
+    rv=apr_socket_recv(ns,buf,&len);
+    if(rv==APR_SUCCESS) cout << "LLEGO PAQUETE" << endl;
+    if(len>0){
+        cout << "llego un paquete" << endl;
     buf[len] = '\0'; 
-    packet=string(buf);
+    packet=string(buf);    
+    //usleep(5000); 
+    if(!packet.empty())cout << "el packete que llego es:" << packet << endl;
+    }
     if(APR_STATUS_IS_EOF(rv) || len==0)
         isev= false;
     else

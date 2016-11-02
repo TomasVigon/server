@@ -14,6 +14,7 @@ fsmServer::~fsmServer() {
 void fsmServer::sendAck(void)
 {
     string dataString;
+    cout << "enviando ACK" << endl;
     p.getPacketData(packet,dataString);
     file.chunkToFile(dataString);//GUARDO LA INFO EN EL ARCHIVO
     file.increaseChunkNum();
@@ -25,6 +26,7 @@ void fsmServer::sendAck(void)
 void fsmServer::acceptWRQ(void)
 {
     p.getPacketFileName(packet,filename);
+    cout << "recibiendo archivo: " << filename << endl;
     file.openwFile(filename);
     string dataString;
     p.getPacketData(packet,dataString);
