@@ -43,11 +43,14 @@ private:
         const cellType fsm_matrix[STATE_COUNT][EVENT_COUNT] = {
 
             //wrq						rrq					timeount					ack                                         quit				last_data 					data       					error
-	{{ WRITE,&fsmServer::sendAck},              { READ, &fsmServer::sendData },		{ IDLE, &fsmServer::nothing },			{ IDLE, &fsmServer::nothing },		{ IDLE, &fsmServer::end },		{ IDLE, &fsmServer::nothing },			{ IDLE, &fsmServer::nothing },			{ IDLE, &fsmServer::errorEvent } },		//IDLE              
-	{{ WRITE, &fsmServer::nothing},             { WRITE, &fsmServer::nothing },		{ WRITE, &fsmServer::sendAck },			{ WRITE, &fsmServer::nothing },		{ IDLE, &fsmServer::end },		{ IDLE, &fsmServer::sendAck },			{ WRITE, &fsmServer::sendAck },			{ IDLE, &fsmServer::errorEvent } },		//WRITE             
-	{{ READ, &fsmServer::nothing },             { READ, &fsmServer::nothing },		{ READ, &fsmServer::sendData },			{ READ, &fsmServer::sendData },		{ IDLE, &fsmServer::end },		{ LAST_READ, &fsmServer::nothing },		{ READ, &fsmServer::nothing },			{ IDLE, &fsmServer::errorEvent } },		//READ              
-	{{ LAST_READ, &fsmServer::nothing },        { LAST_READ, &fsmServer::nothing },		{ LAST_READ, &fsmServer::sendData },            { IDLE, &fsmServer::nothing },		{ IDLE, &fsmServer::end },		{ LAST_READ, &fsmServer::nothing },		{ LAST_READ, &fsmServer::nothing },		{ IDLE, &fsmServer::errorEvent } },		//LAST_READ         
-};
+	{{ WRITE,&fsmServer::sendAck},              { READ, &fsmServer::sendData },		{ IDLE, &fsmServer::nothing },			{ IDLE, &fsmServer::nothing },		{ FINISH, &fsmServer::end },		{ IDLE, &fsmServer::nothing },			{ IDLE, &fsmServer::nothing },			{ IDLE, &fsmServer::errorEvent } },		//IDLE              
+	{{ WRITE, &fsmServer::nothing},             { WRITE, &fsmServer::nothing },		{ WRITE, &fsmServer::sendAck },			{ WRITE, &fsmServer::nothing },		{ FINISH, &fsmServer::end },		{ FINISH, &fsmServer::sendAck },			{ WRITE, &fsmServer::sendAck },			{ IDLE, &fsmServer::errorEvent } },		//WRITE             
+	{{ READ, &fsmServer::nothing },             { READ, &fsmServer::nothing },		{ READ, &fsmServer::sendData },			{ READ, &fsmServer::sendData },		{ FINISH, &fsmServer::end },		{ LAST_READ, &fsmServer::nothing },		{ READ, &fsmServer::nothing },			{ IDLE, &fsmServer::errorEvent } },		//READ              
+	{{ LAST_READ, &fsmServer::nothing },        { LAST_READ, &fsmServer::nothing },		{ LAST_READ, &fsmServer::sendData },            { IDLE, &fsmServer::nothing },		{ FINISH, &fsmServer::end },		{ LAST_READ, &fsmServer::nothing },		{ LAST_READ, &fsmServer::nothing },		{ IDLE, &fsmServer::errorEvent } },		//LAST_READ         
+        {{ FINISH, &fsmServer::nothing },           { FINISH, &fsmServer::nothing },            { FINISH, &fsmServer::nothing },                { FINISH, &fsmServer::nothing },        { FINISH, &fsmServer::nothing },        { FINISH, &fsmServer::nothing },                { FINISH, &fsmServer::nothing },                { FINISH, &fsmServer::nothing }  },             //FINISH          
+        
+        
+        };
 
 	//void sendWrq(void);
 	//void sendRrq(void);
