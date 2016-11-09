@@ -39,7 +39,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/fsmServer.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/packetManager.o \
-	${OBJECTDIR}/server.o
+	${OBJECTDIR}/server.o \
+	${OBJECTDIR}/watchPuppy.o
 
 
 # C Compiler Flags
@@ -90,6 +91,11 @@ ${OBJECTDIR}/server.o: server.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/server.o server.cpp
+
+${OBJECTDIR}/watchPuppy.o: watchPuppy.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/watchPuppy.o watchPuppy.cpp
 
 # Subprojects
 .build-subprojects:

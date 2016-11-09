@@ -21,6 +21,11 @@ int main(int argc, char** argv) {
                 cout << "llego un paquete" << endl;
             fsm.cicleFsm(fsm.getEvent());
             }
+            if(fsm.isTimebreak())
+            {
+            cout << "timeout papa";
+            fsm.cicleFsm(timebreak);        
+            }
         }
     }
     cout << endl << "fin";

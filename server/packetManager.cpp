@@ -41,17 +41,11 @@ bool packetManager::createPacket(string& packet, typeEvent event, unsigned int b
 
 }
 
-bool packetManager::createErrorPacket(string& packet, unsigned int error, string& message)
-{
-	if(error>MAXERROR)return false;
-	stringstream ss;
+bool packetManager::createErrorPacket(string& packet)
+{	
 	packet.clear();
 	packet+="05";
-	ss << error;
-	packet+=ss.str();
-	packet+=message;
 	return true;
-
 }
 
 typeEvent packetManager::getPacketType(string& packet)

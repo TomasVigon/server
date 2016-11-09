@@ -13,6 +13,8 @@ fsmServer::~fsmServer() {
 
 void fsmServer::sendAck(void)
 {
+    if(p.getPacketBLock(packet)==file.getChunkNum()-1)
+    {
     string dataString;
     cout << "enviando ACK" << endl;
     p.getPacketData(packet,dataString);
@@ -20,11 +22,16 @@ void fsmServer::sendAck(void)
     
     
     
-    file.increaseChunkNum();
+    file.increaseChunkNum();// VOLVER A PONERRRRRRR
     file.chunkToFile(dataString);//GUARDO LA INFO EN EL ARCHIVO
     p.createPacket(packet,ack,file.getChunkNum());
     s.sendInfo(packet); //VOLVER APON ER
     if(dataString.length()<512)cicleFsm(last_send);
+    }
+    else
+    {
+        cicleFsm(error);
+    }
    
 }
 
@@ -56,7 +63,12 @@ void fsmServer::acceptRRQ(void)
 	s.sendInfo(packet);
     }
     else
+    {
         cout << "no pude abrir el archivo" << endl;
+        p.createErrorPacket(packet);
+        s.sendInfo(packet);
+    }
+    
 }
 
 void fsmServer::errorEvent(void)
@@ -71,22 +83,25 @@ void fsmServer::cicleFsm(typeEvent event)
     //cell.*((fsmClient*)this)->fsmClient::cellType::action();
     //cell.*(fsmClient::cellType::(fsmClient::action))();
     ((*this).*(cell.action))();
+    timeAlert.feed_watchPuppy();
 }
 
 void fsmServer::sendData(void)
 {
-        //SI NUMERO ACK CORRESPONDE A NUMERO DATA
+        if(p.getPacketBLock(packet)==file.getChunkNum())
+        {
         file.increaseChunkNum();
 	string dataString=file.getChunk();
-        if(file.End())
-        {
-            cell=fsm_matrix[cell.nextState][last_send];
-        }
-        else
-        {
+        if(file.End())cell.nextState=LAST_READ;       
+        
 	p.createPacket(packet,data,dataString,file.getChunkNum());
 	s.sendInfo(packet); // VOLVER A PONER
         }
+        else
+        {
+            cicleFsm(error);
+        }
+        
 }
 
 bool fsmServer::isEvent()
@@ -125,3 +140,7 @@ bool fsmServer::connectServer()
     return s.isConnected();    
 }
 
+bool fsmServer::isTimebreak()
+{
+    return timeAlert.watchPuppyAlert();
+}

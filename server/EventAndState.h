@@ -11,5 +11,6 @@ typedef enum {wrq,rrq,timebreak,ack,quit,last_send,data,error,no_event}	typeEven
 
 
 
+
 #endif /* EVENTANDSTATE_H */
 

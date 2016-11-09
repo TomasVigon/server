@@ -42,6 +42,7 @@ void fileClass::openwFile(string& str)           //no chequeo porque si no exist
 void fileClass::closeFile()
 {
     readFile.close();
+    writeFile.close();
 }
 
 string fileClass::getChunk()

@@ -10,6 +10,7 @@
 #include "server.h"
 #include "EventAndState.h"
 #include "fileClass.h"
+#include "watchPuppy.h"
 
 #define STATE_COUNT 5
 #define EVENT_COUNT 8 
@@ -33,10 +34,12 @@ public:
     typeEvent getEvent();
     void setFilename(string& name);
     bool connectServer();
+    bool isTimebreak(void);
 	
 private:
         string packet;
 	cellType cell;
+        watchPuppy timeAlert;
         string filename;
         fileClass file;        
         packetManager p;
@@ -61,7 +64,7 @@ private:
         void acceptWRQ(void);
         void acceptRRQ(void);
         
-  
+        
 
 };
 
