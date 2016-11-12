@@ -198,28 +198,29 @@ apr_status_t server::getRV()
     return rv;
 }
 
-void server::sendInfo(string& str)
+void server::sendInfo(char* packet)
 {
-   	len = str.length();	 
-	rv = apr_socket_send(ns, str.c_str(), &len); 
+   	len = BUFSIZE-1;	 
+	rv = apr_socket_send(ns, packet, &len); 
         if(rv==APR_SUCCESS) cout << "todo piola" << endl;
         
 }
 
-bool server::isEvent(string& packet)
+bool server::isEvent(char* packet)
 {
     bool isev=false;
-    
-    char buf[BUFSIZE];	
+    //memset(packet,0,BUFSIZE-1);
+    //char buf[BUFSIZE];	
     len = BUFSIZE-1;
-    rv=apr_socket_recv(ns,buf,&len);
+    //cout << "hay paquete?" << endl;
+    rv=apr_socket_recv(ns,packet,&len);
     if(rv==APR_SUCCESS) cout << "LLEGO PAQUETE" << endl;
     if(len>0){
         cout << "llego un paquete" << endl;
-    buf[len] = '\0'; 
-    packet=string(buf);    
+    packet[len] = '\0'; 
+    //packet=string(buf);    
     //usleep(5000); 
-    if(!packet.empty())cout << "el packete que llego es:" << packet << endl;
+    //if(!packet.empty())cout << "el packete que llego es:" << packet << endl;
     }
     if(APR_STATUS_IS_EOF(rv) || len==0)
         isev= false;

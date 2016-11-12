@@ -43,9 +43,9 @@ public:
     -> Este memory pool se debe haber creado previamente con apr_pool_create() y debe permanecer in scope mientras dure esta función.
     **/
     void receiveInfo(string &str);
-    void sendInfo(string &str);
+    void sendInfo(char* packet);
     apr_status_t getRV();
-    bool isEvent(string& packet);
+    bool isEvent(char* packet);
     bool isConnected();
 private:
     apr_status_t rv;   //esta variable la usamos para leer los errores y verificar cuando las cosas andan o no.

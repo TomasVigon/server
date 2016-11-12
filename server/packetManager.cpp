@@ -1,54 +1,49 @@
 #include "packetManager.h"
 
-bool packetManager::createPacket(string& packet, typeEvent event, string& dataString, unsigned int blockNum)
+bool packetManager::createPacket(char* packet, typeEvent event, string& dataString, unsigned int blockNum)
 {//ESTE ES PARA DATA
 
-	stringstream ss;
-	packet.clear();
-	if(event==data)
-	packet+="03"; //DATA
-	else return false;
-	ss << blockNum;
-	packet+=ss.str();
-	packet+=dataString;
-	return true;
+    packet[0]='0';
+    if(event==data)
+    packet[1]='3';
+    else return false;
+    packet[2]=blockNum;    
+    strcpy(packet+3,dataString.c_str());
+    return true;
 }
 
-bool packetManager::createPacket(string& packet, typeEvent event, string& dataString)
+bool packetManager::createPacket(char* packet, typeEvent event, string& dataString)
 {//ESTE ES PARA WRQ Y RRQ
-	packet.clear();
-	if(event==rrq)packet+="01";//RRQ
-	else if(event==wrq)packet+="02";//WRQ	
-	else return false;
-	packet+=dataString;
-        /*
-	packet+="0"; //NO ES ESTE CERO
-	packet+=TRANS_MODE;
-	packet+="0";
-        */        
-	return true;
+    packet[0]='0';
+    if(event==rrq)packet[1]='1';//RRQ
+    else if(event==wrq)packet[1]='2';//WRQ	
+    else return false;
+    strcpy(packet+3,dataString.c_str());
+    //cout << "el paquete es:" << packet << endl;
+    //packet+="0"; //NO ES ESTE CERO
+    strcpy(packet+4+dataString.length(),TRANS_MODE);
+    return true;
 }
 
-bool packetManager::createPacket(string& packet, typeEvent event, unsigned int blockNum)
+bool packetManager::createPacket(char* packet, typeEvent event, unsigned int blockNum)
 {//ESTE ES PARA ACK
-	stringstream ss;
-	packet.clear();
-	if(event==ack) packet+="04";
+	packet[0]='0';
+	if(event==ack) packet[1]='4';
 	else return false;
-	ss << blockNum;
-	packet+=ss.str();
+	packet[2]=blockNum;
+        packet[3]=0;
 	return true;
 
 }
 
-bool packetManager::createErrorPacket(string& packet)
+bool packetManager::createErrorPacket(char* packet)
 {	
-	packet.clear();
-	packet+="05";
-	return true;
+    packet[0]='0';
+    packet[1]='5';
+    return true;
 }
 
-typeEvent packetManager::getPacketType(string& packet)
+typeEvent packetManager::getPacketType(char* packet)
 {
 	typeEvent event;
 	if(packet[1]=='1')event=rrq;
@@ -60,17 +55,22 @@ typeEvent packetManager::getPacketType(string& packet)
 	return event;
 }
 
-unsigned int packetManager::getPacketBLock(string& packet)
+unsigned int packetManager::getPacketBLock(char* packet)
 {	
-	return stoi(packet.substr(2,2));
+return packet[2];
 }
 
-void packetManager::getPacketData(string& packet, string& dataString)
+void packetManager::getPacketData(char* packet, string& dataString)
 {
-	dataString=packet.substr(3);
+    char dataAux[512];
+    strcpy(dataAux,packet+3);
+    dataString=string(dataAux);
 }
-void packetManager::getPacketFileName(string& packet, string& dataString)
+void packetManager::getPacketFileName(char* packet, string& dataString)
 {
-	dataString=packet.substr(2);
-
+    char dataAux[512];
+    
+    //char *strchr(packet,0)
+    strcpy(dataAux,packet+3);
+    dataString=string(dataAux);
 }

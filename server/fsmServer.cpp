@@ -13,7 +13,7 @@ fsmServer::~fsmServer() {
 
 void fsmServer::sendAck(void)
 {
-    if(p.getPacketBLock(packet)==file.getChunkNum()-1)
+    if(p.getPacketBLock(packet)-1==file.getChunkNum())
     {
     string dataString;
     cout << "enviando ACK" << endl;
@@ -30,6 +30,7 @@ void fsmServer::sendAck(void)
     }
     else
     {
+        cout << "error ack" << endl;
         cicleFsm(error);
     }
    
@@ -74,15 +75,21 @@ void fsmServer::acceptRRQ(void)
 void fsmServer::errorEvent(void)
 {
     //ACA LOS ERRORES
+    p.createErrorPacket(packet);
+    s.sendInfo(packet);
 }
 
 
 void fsmServer::cicleFsm(typeEvent event)
 {
+    if(event==ack)cout << "ACK" << endl;
+    if(cell.nextState==LAST_READ) cout <<"se termino la enviada" << endl;
     cell=fsm_matrix[cell.nextState][event];
     //cell.*((fsmClient*)this)->fsmClient::cellType::action();
     //cell.*(fsmClient::cellType::(fsmClient::action))();
+    cout << "apunto de ralizar accion" << endl;
     ((*this).*(cell.action))();
+    cout << "accion realizada" << endl;
     timeAlert.feed_watchPuppy();
 }
 
@@ -92,8 +99,11 @@ void fsmServer::sendData(void)
         {
         file.increaseChunkNum();
 	string dataString=file.getChunk();
-        if(file.End())cell.nextState=LAST_READ;       
-        
+        if(file.End())
+        {
+            cell.nextState=LAST_READ;       
+            cout << "enviando ultima data" << endl;
+        }
 	p.createPacket(packet,data,dataString,file.getChunkNum());
 	s.sendInfo(packet); // VOLVER A PONER
         }
@@ -129,9 +139,10 @@ typeEvent fsmServer::getEvent()
     return p.getPacketType(packet);
 }
 
-void fsmServer::end()
+void fsmServer::end(void)
 {
     cout << "fin transmision" << endl;
+    file.closeFile();
 }
 
 bool fsmServer::connectServer()
@@ -142,5 +153,22 @@ bool fsmServer::connectServer()
 
 bool fsmServer::isTimebreak()
 {
-    return timeAlert.watchPuppyAlert();
+    return timeAlert.watchPuppyAlert()&&cell.nextState!=IDLE&&cell.nextState!=FINISH;
+}
+
+void fsmServer::resend(void)
+{
+    s.sendInfo(packet); 
+}
+
+/* bool fsmServer::isQuit(void)
+ {
+     cout << "esta fncion de mierda me caga el programa" <<endl;
+     return (tolower(getch())=='q');
+ }*/
+
+void fsmServer::reset(void)
+{
+    cell.nextState=IDLE;
+    cell.action=&fsmServer::nothing;
 }

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <string.h>
 
 #include "EventAndState.h"
 
@@ -19,14 +20,14 @@ class packetManager
 public:
 
         //packetManager();
-	bool createPacket(string& packet, typeEvent event, string& dataString, unsigned int blockNum); 
-	bool createPacket(string& packet, typeEvent event, string& dataString);
-	bool createPacket(string& packet, typeEvent event, unsigned int blockNum);
-	bool createErrorPacket(string& packet);
-	typeEvent getPacketType(string& packet);
-	unsigned int getPacketBLock(string& packet);
-	void getPacketData(string& packet, string& dataString);
-	void getPacketFileName(string& packet, string& dataString);
+	bool createPacket(char* packet, typeEvent event, string& dataString, unsigned int blockNum); 
+	bool createPacket(char* packet, typeEvent event, string& dataString);
+	bool createPacket(char* packet, typeEvent event, unsigned int blockNum);
+	bool createErrorPacket(char* packet);
+	typeEvent getPacketType(char* packet);
+	unsigned int getPacketBLock(char* packet);
+	void getPacketData(char* packet, string& dataString);
+	void getPacketFileName(char* packet, string& dataString);
 
 };
 
