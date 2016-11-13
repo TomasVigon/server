@@ -35,7 +35,7 @@ public:
     bool isEvent();
     typeEvent getEvent();
     void setFilename(string& name);
-    bool connectServer();
+    bool connectServer(char * ip);
     bool isTimebreak(void);
     void reset(void);
     //bool isQuit(void);

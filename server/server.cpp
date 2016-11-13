@@ -28,10 +28,11 @@ server::~server() {
 	
 }
 
-void server::doServerConnect()
+
+void server::doServerConnect(char * ip)
 {
     //LLamamos a la función doListen para que inicialice el puerto para escucha. El socket s va a tener la info del puerto que se está escuchando.
-    if(doListen() == APR_SUCCESS)
+    if(doListen(ip) == APR_SUCCESS)
     {
 	cout << "now listening ! turn on the client!" << endl;
 	
@@ -77,7 +78,7 @@ void server::doServerConnect()
 
 }
 
-apr_status_t server::doListen()
+apr_status_t server::doListen(char * ip)
 {
 	apr_socket_t *m;      //Este es el "Network Socket" Según el mismo link. Allí se explica claramente la diferencia entre ellos.
 	apr_sockaddr_t *sa; //Esta variable es un "Socket Address" es la combinación de una IP y un puerto. Para mas detalles ver la definición de Socket Address en https://en.wikipedia.org/wiki/Network_socket.
@@ -91,7 +92,7 @@ apr_status_t server::doListen()
 	 //El quinto flags (para más info https://apr.apache.org/docs/apr/1.5/group__apr__network__io.html).
 	 //El sexto es el pool de memoria que usa APR. previamente inicializado.
 	 
-	rv = apr_sockaddr_info_get(&sa,HOME_ADRESS, AF_INET, DEF_LISTEN_PORT, 0, mp); 
+	rv = apr_sockaddr_info_get(&sa,ip, AF_INET, DEF_LISTEN_PORT, 0, mp); 
 
 	if (rv == APR_SUCCESS) 
 	{

@@ -35,7 +35,7 @@ public:
     server();
     server(const server& orig);
     virtual ~server();
-    void doServerConnect(void);
+    void doServerConnect(char * ip);
     /** Función auxiliar doServTask()
     * Recibe un string del socket  serv_sock (recibido como primer parámetro) y lo imprimer por pantalla. Asume que serv_sock ya fue inicializado y la comunicación está activa.
     * En serv_sock recibe un apr_socket_t * inicializado con una conexión realizada (por ejemplo llamando a la función apr_socket_accept()).
@@ -62,7 +62,7 @@ private:
     // Se ve que la información de escucha queda guardada en la variable s y por ello es que se necesitan dos o más sockets en el server: uno que
     // identifica el puerto a escuchar (s en nuestro caso) y uno o mas que identifican las conexiones realiadas (ns en nuestro caso).
     apr_socket_t *ns;
-    apr_status_t doListen();
+    apr_status_t doListen(char * ip);
     apr_size_t len;
 
 };

@@ -61,6 +61,7 @@ void fsmServer::acceptRRQ(void)
         file.increaseChunkNum();
 	string dataString=file.getChunk();
 	p.createPacket(packet,data,dataString,file.getChunkNum());
+        cout<<"numero de paquete segun server: "<< file.getChunkNum()<<endl;
 	s.sendInfo(packet);
     }
     else
@@ -151,9 +152,9 @@ void fsmServer::end(void)
     file.closeFile();
 }
 
-bool fsmServer::connectServer()
+bool fsmServer::connectServer(char *ip)
 {
-    s.doServerConnect();
+    s.doServerConnect(ip);
     return s.isConnected();    
 }
 
