@@ -2,7 +2,8 @@
 
 bool packetManager::createPacket(char* packet, typeEvent event, string& dataString, unsigned int blockNum)
 {//ESTE ES PARA DATA
-
+    memset(packet, 0, strlen(packet));
+    
     packet[0]='0';
     if(event==data)
     packet[1]='3';
@@ -14,6 +15,7 @@ bool packetManager::createPacket(char* packet, typeEvent event, string& dataStri
 
 bool packetManager::createPacket(char* packet, typeEvent event, string& dataString)
 {//ESTE ES PARA WRQ Y RRQ
+    memset(packet, 0, strlen(packet));
     packet[0]='0';
     if(event==rrq)packet[1]='1';//RRQ
     else if(event==wrq)packet[1]='2';//WRQ	
@@ -27,7 +29,8 @@ bool packetManager::createPacket(char* packet, typeEvent event, string& dataStri
 
 bool packetManager::createPacket(char* packet, typeEvent event, unsigned int blockNum)
 {//ESTE ES PARA ACK
-	packet[0]='0';
+        memset(packet, 0, strlen(packet));
+        packet[0]='0';
 	if(event==ack) packet[1]='4';
 	else return false;
 	packet[2]=blockNum;
@@ -38,6 +41,7 @@ bool packetManager::createPacket(char* packet, typeEvent event, unsigned int blo
 
 bool packetManager::createErrorPacket(char* packet)
 {	
+    memset(packet, 0, strlen(packet));
     packet[0]='0';
     packet[1]='5';
     return true;

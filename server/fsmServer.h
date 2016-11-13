@@ -51,11 +51,11 @@ private:
         const cellType fsm_matrix[STATE_COUNT][EVENT_COUNT] = {
 
         //wrq                                       rrq                                         timeount					ack                                      quit                                   last_send 				data       					error
-	{{ WRITE,&fsmServer::acceptWRQ},            { READ, &fsmServer::acceptRRQ },		{ IDLE, &fsmServer::nothing },			{ IDLE, &fsmServer::nothing },		{ FINISH, &fsmServer::end },		{ IDLE, &fsmServer::nothing },		{ IDLE, &fsmServer::nothing },			{ IDLE, &fsmServer::errorEvent } },		//IDLE              
+	{{ WRITE, &fsmServer::acceptWRQ},           { READ, &fsmServer::acceptRRQ },		{ IDLE, &fsmServer::nothing },			{ IDLE, &fsmServer::nothing },		{ FINISH, &fsmServer::end },		{ IDLE, &fsmServer::nothing },		{ IDLE, &fsmServer::nothing },			{ IDLE, &fsmServer::errorEvent } },		//IDLE              
 	{{ WRITE, &fsmServer::nothing},             { WRITE, &fsmServer::nothing },		{ WRITE, &fsmServer::resend},			{ WRITE, &fsmServer::nothing },		{ FINISH, &fsmServer::end },		{ IDLE, &fsmServer::end },		{ WRITE, &fsmServer::sendAck },			{ IDLE, &fsmServer::errorEvent } },             //WRITE             
 	{{ READ, &fsmServer::nothing },             { READ, &fsmServer::nothing },		{ READ, &fsmServer::resend },			{ READ, &fsmServer::sendData },		{ FINISH, &fsmServer::end },		{ IDLE, &fsmServer::end },		{ READ, &fsmServer::nothing },			{ IDLE, &fsmServer::errorEvent } },		//READ              
 	{{ LAST_READ, &fsmServer::nothing },        { LAST_READ, &fsmServer::nothing },		{ LAST_READ, &fsmServer::resend},               { IDLE, &fsmServer::end },		{ FINISH, &fsmServer::end },		{ LAST_READ, &fsmServer::nothing },	{ LAST_READ, &fsmServer::nothing },		{ IDLE, &fsmServer::errorEvent } },		//LAST_READ         
-        {{ FINISH, &fsmServer::nothing },           { FINISH, &fsmServer::nothing },            { FINISH, &fsmServer::nothing },                { FINISH, &fsmServer::nothing },        { FINISH, &fsmServer::nothing },        { FINISH, &fsmServer::nothing },        { FINISH, &fsmServer::nothing },                { FINISH, &fsmServer::nothing }  },             //FINISH          
+        {{ FINISH, &fsmServer::nothing },           { FINISH, &fsmServer::nothing },            { FINISH, &fsmServer::nothing },                { FINISH, &fsmServer::nothing },        { FINISH, &fsmServer::nothing },        { FINISH, &fsmServer::nothing },        { FINISH, &fsmServer::nothing },                { FINISH, &fsmServer::nothing  } },             //FINISH          
                 
 
         };

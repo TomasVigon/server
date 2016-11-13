@@ -7,11 +7,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/marcos/NetBeansProjects/server/server/fsmServer.h</file>
-            <file>file:/home/marcos/NetBeansProjects/server/server/main.cpp</file>
-            <file>file:/home/marcos/NetBeansProjects/server/server/server.cpp</file>
-            <file>file:/home/marcos/NetBeansProjects/server/server/fileClass.cpp</file>
-            <file>file:/home/marcos/NetBeansProjects/server/server/fsmServer.cpp</file>
+            <file>file:/home/tomas/NetBeansProjects/server/server/fsmServer.h</file>
+            <file>file:/home/tomas/NetBeansProjects/server/server/fsmServer.cpp</file>
+            <file>file:/home/tomas/NetBeansProjects/server/server/main.cpp</file>
+            <file>file:/home/tomas/NetBeansProjects/server/server/EventAndState.h</file>
         </group>
     </open-files>
 </project-private>

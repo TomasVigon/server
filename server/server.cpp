@@ -216,7 +216,7 @@ bool server::isEvent(char* packet)
     rv=apr_socket_recv(ns,packet,&len);
     if(rv==APR_SUCCESS) cout << "LLEGO PAQUETE" << endl;
     if(len>0){
-        cout << "llego un paquete" << endl;
+        cout << "llego un paquetee" << endl;
     packet[len] = '\0'; 
     //packet=string(buf);    
     //usleep(5000); 

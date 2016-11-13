@@ -29,6 +29,7 @@ public:
     unsigned int getChunkNum();
     bool getCheckFile();
     
+    
     //aguante boca y github
 private:
     string dwld;

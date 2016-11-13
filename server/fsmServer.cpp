@@ -87,7 +87,8 @@ void fsmServer::cicleFsm(typeEvent event)
     cell=fsm_matrix[cell.nextState][event];
     //cell.*((fsmClient*)this)->fsmClient::cellType::action();
     //cell.*(fsmClient::cellType::(fsmClient::action))();
-    cout << "apunto de ralizar accion" << endl;
+    cout << "apunto de realizar accion" << endl;
+    cout << "hola"<<endl;
     ((*this).*(cell.action))();
     cout << "accion realizada" << endl;
     timeAlert.feed_watchPuppy();
@@ -97,16 +98,21 @@ void fsmServer::sendData(void)
 {
         if(p.getPacketBLock(packet)==file.getChunkNum())
         {
-        file.increaseChunkNum();
-	string dataString=file.getChunk();
-        if(file.End())
-        {
-            cell.nextState=LAST_READ;       
-            cout << "enviando ultima data" << endl;
-        }
-	p.createPacket(packet,data,dataString,file.getChunkNum());
-	s.sendInfo(packet); // VOLVER A PONER
-        }
+            file.increaseChunkNum();
+            string dataString=file.getChunk();
+            if(file.End())
+            {
+                cell.nextState=IDLE;       
+                cout << "enviando ultima data" << endl;
+                p.createPacket(packet,data,dataString,file.getChunkNum());
+                s.sendInfo(packet); // VOLVER A PONER
+            }
+            else
+            {
+                p.createPacket(packet,data,dataString,file.getChunkNum());
+                s.sendInfo(packet); // VOLVER A PONER
+            }
+	}
         else
         {
             cicleFsm(error);
