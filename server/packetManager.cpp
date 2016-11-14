@@ -75,6 +75,7 @@ void packetManager::getPacketFileName(char* packet, string& dataString)
     char dataAux[512];
     
     //char *strchr(packet,0)
-    strcpy(dataAux,packet+3);
+    strcpy(dataAux,packet+2);
+    cout<<packet;
     dataString=string(dataAux);
 }
